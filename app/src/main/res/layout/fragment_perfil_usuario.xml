@@ -51,6 +51,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
+    <EditText
+        android:id="@+id/registerTelefoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Telefone"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerEmailEditText" />
+
     <EditText
         android:id="@+id/registerEnderecoEditText"
         android:layout_width="0dp"
@@ -58,7 +71,7 @@
         android:hint="Endereço"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/registerEmailEditText" />
+        app:layout_constraintTop_toBottomOf="@id/registerTelefoneEditText" />
 
     <EditText
         android:id="@+id/registerPasswordEditText"
@@ -84,10 +97,12 @@
         android:id="@+id/salvarButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
         android:text="Atualizar"
-        app:layout_constraintTop_toBottomOf="@id/registerConfirmPasswordEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/registerConfirmPasswordEditText" />
 
     <Button
         android:id="@+id/sairButton"
