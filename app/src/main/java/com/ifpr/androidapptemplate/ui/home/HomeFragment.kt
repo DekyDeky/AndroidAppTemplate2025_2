@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.ifpr.androidapptemplate.R
 import com.ifpr.androidapptemplate.baseclasses.Item
 import com.ifpr.androidapptemplate.databinding.FragmentHomeBinding
+import org.w3c.dom.Text
 
 class HomeFragment : Fragment() {
 
@@ -49,7 +50,7 @@ class HomeFragment : Fragment() {
     }
 
     fun carregarItensMarketplace(container: LinearLayout) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("itens")
+        val databaseRef = FirebaseDatabase.getInstance().getReference("tarefas")
 
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,9 +64,15 @@ class HomeFragment : Fragment() {
                             .inflate(R.layout.item_template, container, false)
 
                         val imageView = itemView.findViewById<ImageView>(R.id.item_image)
-                        val enderecoView = itemView.findViewById<TextView>(R.id.item_endereco)
+                        val tarefaView = itemView.findViewById<TextView>(R.id.item_tarefa)
+                        val descricaoView = itemView.findViewById<TextView>(R.id.item_descricao)
+                        val dataInicio = itemView.findViewById<TextView>(R.id.item_dataInicio)
+                        val dataFim = itemView.findViewById<TextView>(R.id.item_dataFim)
 
-                        enderecoView.text = "Endereço: ${item.endereco ?: "Não informado"}"
+                        tarefaView.text = "${item.tarefa ?: "Não informado"}"
+                        descricaoView.text = "${item.descricao ?: "Não informado"}"
+                        dataInicio.text = "Ínicio em: ${item.dataInicio ?: "Não informado"}"
+                        dataFim.text = "Finalização em: ${item.dataFim ?: "Não informado"}"
 
                         if (!item.imageUrl.isNullOrEmpty()) {
                             Glide.with(container.context).load(item.imageUrl).into(imageView)

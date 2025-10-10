@@ -25,11 +25,33 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/item_endereco"
+                android:id="@+id/item_tarefa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Endereço:"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_descricao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_dataInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data de ìnicio: "
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_dataFim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data de Fim: "
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <!-- Campos futuros aqui -->

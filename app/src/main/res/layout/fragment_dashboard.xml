@@ -45,13 +45,43 @@
 
 
     <EditText
-        android:id="@+id/enderecoItemEditText"
+        android:id="@+id/tarefaItemEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Endereço"
+        android:hint="Tarefa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_select_image" />
+
+    <EditText
+        android:id="@+id/descricaoItemEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Descrição da Tarefa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tarefaItemEditText" />
+
+    <EditText
+        android:id="@+id/dataInicioItemEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Selecione a data de Ínicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descricaoItemEditText"/>
+
+    <EditText
+        android:id="@+id/dataFimItemEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Selecione a data de Finalização"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dataInicioItemEditText"/>
+
+
+
 
 
     <Button
@@ -59,7 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Salvar"
-        app:layout_constraintTop_toBottomOf="@id/enderecoItemEditText"
+        app:layout_constraintTop_toBottomOf="@id/dataFimItemEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
