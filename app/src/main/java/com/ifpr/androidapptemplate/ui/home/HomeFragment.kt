@@ -40,12 +40,15 @@ import com.ifpr.androidapptemplate.R
 import com.ifpr.androidapptemplate.baseclasses.Item
 import com.ifpr.androidapptemplate.databinding.FragmentHomeBinding
 import org.w3c.dom.Text
+import kotlin.div
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
     private lateinit var currentAddressTextView: TextView
+
+    private lateinit var IFPRDistanceTextView: TextView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
@@ -75,6 +78,7 @@ class HomeFragment : Fragment() {
 
     private fun inicializaGerenciamentoLocalizacao(view: View) {
         currentAddressTextView = view.findViewById(R.id.currentAddressTextView)
+        IFPRDistanceTextView = view.findViewById(R.id.IFPRDistanceTextView)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -133,6 +137,7 @@ class HomeFragment : Fragment() {
             return
         }
 
+
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let { location ->
@@ -153,7 +158,9 @@ class HomeFragment : Fragment() {
             locationCallback,
             Looper.getMainLooper()
         )
+
     }
+
 
     private fun displayAddress(location: Location) {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
@@ -171,6 +178,15 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+        val targetLocation = Location("").apply {
+            latitude = -24.33522997524075
+            longitude = -50.65224388708329
+        }
+
+        val distanceInMeters = location.distanceTo(targetLocation)
+        val distanceInKm = distanceInMeters / 1000
+        IFPRDistanceTextView.text = "Distância até o IFPR: %.2f km".format(distanceInKm)
     }
 
     override fun onDestroyView() {
