@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
@@ -51,6 +52,9 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.button_login)
         registerLink = findViewById(R.id.registerLink)
         btnGoogleSignIn = findViewById<SignInButton>(R.id.btnGoogleSignIn)
+
+        val typeface = ResourcesCompat.getFont(this, R.font.marcellus_sc)
+        registerLink.typeface = typeface
 
         val registerLink: TextView = findViewById(R.id.registerLink)
         registerLink.setOnClickListener {

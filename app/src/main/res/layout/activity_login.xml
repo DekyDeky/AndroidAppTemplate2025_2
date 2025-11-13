@@ -15,9 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Login de Usuário"
+        android:text="Bem-vindo de volta!"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:fontFamily="@font/marcellus_sc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,6 +30,7 @@
         android:layout_marginTop="16dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:fontFamily="@font/marcellus_sc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_login_title" />
