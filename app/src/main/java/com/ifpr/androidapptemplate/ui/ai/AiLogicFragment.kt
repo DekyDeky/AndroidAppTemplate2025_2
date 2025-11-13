@@ -33,6 +33,11 @@ class AiLogicFragment : Fragment() {
     private var imageUri: Uri? = null
     private lateinit var itemImageView: ImageView
 
+    private lateinit var imageButton: Button
+    private var imageUri: Uri? = null
+    private lateinit var itemImageView: ImageView
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,6 +66,25 @@ class AiLogicFragment : Fragment() {
 
         model = Firebase.ai(backend = GenerativeBackend.googleAI())
             .generativeModel("gemini-2.0-flash")
+
+
+
+        imageButton = view.findViewById(R.id.btn_select_image)
+        itemImageView = view.findViewById(R.id.bitmapImageView)
+
+        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                imageUri = uri
+                Glide.with(this).load(imageUri).into(itemImageView)
+                resultText.text = "Imagem selecionada. Pronto para gerar."
+            } else {
+                resultText.text = "Nenhuma imagem selecionada."
+            }
+        }
+
+        imageButton.setOnClickListener {
+            pickImage.launch("image/*")
+        }
 
         generateButton.setOnClickListener {
             val prompt = promptInput.text.toString().trim()
@@ -101,4 +125,19 @@ class AiLogicFragment : Fragment() {
         }
     }
 
+    private fun generateFromPrompt(prompt: String, bitmap: Bitmap) {
+        lifecycleScope.launch {
+            try {
+                // Provide a prompt that includes the image specified above and text
+                val promptImage = content {
+                    image(bitmap)
+                    text(prompt)
+                }
+                val response = model.generateContent(promptImage)
+                resultText.text = response.text ?: "Nenhuma resposta recebida."
+            } catch (e: Exception) {
+                resultText.text = "Erro ao gerar resposta: ${e.message}"
+            }
+        }
+    }
 }
