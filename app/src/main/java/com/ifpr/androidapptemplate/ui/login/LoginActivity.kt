@@ -53,9 +53,6 @@ class LoginActivity : AppCompatActivity() {
         registerLink = findViewById(R.id.registerLink)
         btnGoogleSignIn = findViewById<SignInButton>(R.id.btnGoogleSignIn)
 
-        val typeface = ResourcesCompat.getFont(this, R.font.marcellus_sc)
-        registerLink.typeface = typeface
-
         val registerLink: TextView = findViewById(R.id.registerLink)
         registerLink.setOnClickListener {
             val intent: Intent = Intent(
