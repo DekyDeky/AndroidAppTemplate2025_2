@@ -14,4 +14,6 @@ data class TalesGeneralInfo(
     var attributes: TalesAttributes? = null, // Permite null, pois pode ser opcional
     var skills: TalesSkills? = null, // Permite null
     var items: TalesItems? = null, // Permite null
+    val base64Image: String? = null,
+    val imageUrl: String? = null
 )

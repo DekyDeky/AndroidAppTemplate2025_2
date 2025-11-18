@@ -560,7 +560,7 @@ class DashboardFragment : Fragment() {
                 //TODO("Capture aqui o conteudo que esta nos outros editTexts que foram criados")
 
 //                val item = Item(tarefa, descricaoTarefa, dataInicio, dataFim, base64Image)
-                val talesSheet = TalesGeneralInfo(name, type, age, luckPoints, drive, anchor, problem, pride, description, song, attributes, skills, items)
+                val talesSheet = TalesGeneralInfo(name, type, age, luckPoints, drive, anchor, problem, pride, description, song, attributes, skills, items, base64Image)
 
                 saveItemIntoDatabase(talesSheet)
             }
