@@ -171,6 +171,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/sheet_openBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Abrir Ficha"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
