@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment">
+    android:fillViewport="true"
+    tools:context=".ui.dashboard.DashboardFragment"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="75dp">
 
 
     <TextView
@@ -15,7 +23,8 @@
         android:layout_marginTop="32dp"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="Cadastro de ..."
+        android:text="Criação de Personagem"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,55 +52,565 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_item" />
 
-
-    <EditText
-        android:id="@+id/tarefaItemEditText"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/section_generalInfo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tarefa"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_select_image" />
+        app:layout_constraintTop_toBottomOf="@id/button_select_image">
 
-    <EditText
-        android:id="@+id/descricaoItemEditText"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/text_generalInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Informações Gerais" />
+
+        <EditText
+            android:id="@+id/sheetCharName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome do Personagem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_generalInfo" />
+
+        <EditText
+            android:id="@+id/sheetCharType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Arquétipo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetCharName" />
+
+        <LinearLayout
+            android:id="@+id/linha1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetCharType">
+
+            <EditText
+                android:id="@+id/sheetCharAge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Idade"/>
+
+            <EditText
+                android:id="@+id/sheetCharLuckPoints"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Pontos de Sorte"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linha2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linha1">
+
+            <EditText
+                android:id="@+id/sheetCharDrive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ímpeto"/>
+
+            <EditText
+                android:id="@+id/sheetCharAnchor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Âncora"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/sheetCharProblem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Problema"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linha2" />
+
+        <EditText
+            android:id="@+id/sheetCharPride"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Orgulho"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetCharProblem" />
+
+        <EditText
+            android:id="@+id/sheetCharDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:hint="Descrição"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetCharPride" />
+
+        <EditText
+            android:id="@+id/sheetCharSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Música Favorita"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheetCharDescription" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/section_attributes"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descrição da Tarefa"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tarefaItemEditText" />
+        app:layout_constraintTop_toBottomOf="@id/section_generalInfo">
 
-    <EditText
-        android:id="@+id/dataInicioItemEditText"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/text_attributes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Atributos" />
+
+        <LinearLayout
+            android:id="@+id/attributes_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Corpo" />
+
+            <EditText
+                android:id="@+id/sheetCharTech"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tecnologia" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/attributes_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharHeart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Coração" />
+
+            <EditText
+                android:id="@+id/sheetCharMind"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Mente" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/section_skills"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Selecione a data de Ínicio"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descricaoItemEditText"/>
+        app:layout_constraintTop_toBottomOf="@id/section_attributes">
 
-    <EditText
-        android:id="@+id/dataFimItemEditText"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/text_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Perícias" />
+
+        <LinearLayout
+            android:id="@+id/skills_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharSneak"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Furtividade" />
+
+            <EditText
+                android:id="@+id/sheetCharForce"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Força" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharMove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Movimentação" />
+
+            <EditText
+                android:id="@+id/sheetCharTinker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Mecânica" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharProgram"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Programação" />
+
+            <EditText
+                android:id="@+id/sheetCharCalculate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Cálculo" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_line4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharContact"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Contatos" />
+
+            <EditText
+                android:id="@+id/sheetCharCharm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Charme" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_line5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharLead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Liderança" />
+
+            <EditText
+                android:id="@+id/sheetCharInvestigate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Investigação" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skills_line6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharComprehend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Conhecimento" />
+
+            <EditText
+                android:id="@+id/sheetCharEmpathize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Empatia" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/section_relationships"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Selecione a data de Finalização"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dataInicioItemEditText"/>
+        app:layout_constraintTop_toBottomOf="@id/section_skills">
+
+        <TextView
+            android:id="@+id/text_relationships"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Relacionamentos" />
+
+        <EditText
+            android:id="@+id/sheetCharRelationships"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="6"
+            android:hint="criança 1... criança 2... npc 1..."
+            android:gravity="top"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/section_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/section_relationships">
+
+        <TextView
+            android:id="@+id/text_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Itens" />
+
+        <EditText
+            android:id="@+id/sheetCharIconicItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Item Icônico"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_items"/>
+
+        <LinearLayout
+            android:id="@+id/items_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharItem1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Item 1" />
+
+            <EditText
+                android:id="@+id/sheetCharItem1Bonus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bonus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/items_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharItem2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Item 2" />
+
+            <EditText
+                android:id="@+id/sheetCharItem2Bonus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bonus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/items_line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharItem3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Item 3" />
+
+            <EditText
+                android:id="@+id/sheetCharItem3Bonus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bonus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/items_line4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharItem4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Item 4" />
+
+            <EditText
+                android:id="@+id/sheetCharItem4Bonus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bonus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/items_line5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sheetCharItem5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="Item 5" />
+
+            <EditText
+                android:id="@+id/sheetCharItem5Bonus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bonus" />
+
+        </LinearLayout>
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/section_hideout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/section_items">
 
 
+        <TextView
+            android:id="@+id/text_hideout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Esconderijo" />
+
+        <EditText
+            android:id="@+id/sheetCharHideout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Casa da Árvore em..."
+            android:minLines="5"
+            android:gravity="top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_hideout"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/salvarItemButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Salvar"
-        app:layout_constraintTop_toBottomOf="@id/dataFimItemEditText"
+        android:text="Salvar Personagem"
+        app:layout_constraintTop_toBottomOf="@id/section_hideout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
