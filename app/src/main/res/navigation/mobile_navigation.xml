@@ -35,4 +35,10 @@
         android:name="com.ifpr.androidapptemplate.ui.usuario.PerfilUsuarioFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_perfil_usuario" />
+
+    <fragment
+        android:id="@+id/navigation_char_sheet"
+        android:name="com.ifpr.androidapptemplate.ui.sheet.SheetFragment"
+        android:label="Ficha Completa"
+        tools:layout="@layout/fragment_sheet" />
 </navigation>

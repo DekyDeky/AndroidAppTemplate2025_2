@@ -1,5 +1,7 @@
 package com.ifpr.androidapptemplate.baseclasses
 
+import java.io.Serializable
+
 data class TalesGeneralInfo(
     var name: String = "", // nome não pode ser null
     var type: String = "", // tipo não pode ser null
@@ -17,5 +19,7 @@ data class TalesGeneralInfo(
     var skills: TalesSkills? = null, // Permite null
     var items: TalesItems? = null, // Permite null
     val base64Image: String? = null,
-    val imageUrl: String? = null
-)
+    val imageUrl: String? = null,
+    var conditions: TalesConditions? = null,
+    var experience: Int? = 0
+) : Serializable

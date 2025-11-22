@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import android.util.Base64
 import android.widget.*
 import android.graphics.BitmapFactory
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -216,6 +218,8 @@ class HomeFragment : Fragment() {
                     val charHeartView = itemView.findViewById<TextView>(R.id.sheet_charHeart)
                     val charMindView = itemView.findViewById<TextView>(R.id.sheet_charMind)
 
+                    val sheetOpenBtn = itemView.findViewById<Button>(R.id.sheet_openBtn)
+
 //                        tarefaView.text = "${item.tarefa ?: "Não informado"}"
 //                        descricaoView.text = "${item.descricao ?: "Não informado"}"
 //                        dataInicio.text = "Ínicio em: ${item.dataInicio ?: "Não informado"}"
@@ -249,5 +253,13 @@ class HomeFragment : Fragment() {
                 Toast.makeText(container.context, "Erro ao carregar dados", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun openCharSheet(talesSheet: TalesGeneralInfo){
+        val bundle = Bundle()
+        bundle.putSerializable("charData", talesSheet)
+
+        val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.navigation_char_sheet, bundle)
     }
 }
