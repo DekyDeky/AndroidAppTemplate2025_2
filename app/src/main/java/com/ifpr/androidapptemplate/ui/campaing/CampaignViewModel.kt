@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class CampaignViewModel : ViewModel(){
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is a Campaign Fragment"
+        value = "Criar sua Campanha"
     }
 
     val text: LiveData<String> = _text

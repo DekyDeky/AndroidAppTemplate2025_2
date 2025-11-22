@@ -11,6 +11,8 @@ data class TalesGeneralInfo(
     var pride: String = "", // valor default
     var description: String = "", // valor default
     var song: String = "", // valor default
+    val relationships: String = "",
+    val hideout: String = "",
     var attributes: TalesAttributes? = null, // Permite null, pois pode ser opcional
     var skills: TalesSkills? = null, // Permite null
     var items: TalesItems? = null, // Permite null

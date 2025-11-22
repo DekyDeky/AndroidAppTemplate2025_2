@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
 import com.ifpr.androidapptemplate.R
-import com.ifpr.androidapptemplate.baseclasses.Item
 import com.ifpr.androidapptemplate.baseclasses.TalesAttributes
 import com.ifpr.androidapptemplate.baseclasses.TalesGeneralInfo
 import com.ifpr.androidapptemplate.baseclasses.TalesItems
@@ -367,7 +366,8 @@ class DashboardFragment : Fragment() {
 
 
 // Esconderijo
-        val esconderijo = sheetCharHideoutEditText.text.toString().trim()
+        val hideout = sheetCharHideoutEditText.text.toString().trim()
+
 //        val tarefa = tarefaEditText.text.toString().trim()
 //        val descricaoTarefa = descricaoEditText.text.toString().trim()
 //        val dataInicio = dataInicioEditText.text.toString().trim()
@@ -560,7 +560,7 @@ class DashboardFragment : Fragment() {
                 //TODO("Capture aqui o conteudo que esta nos outros editTexts que foram criados")
 
 //                val item = Item(tarefa, descricaoTarefa, dataInicio, dataFim, base64Image)
-                val talesSheet = TalesGeneralInfo(name, type, age, luckPoints, drive, anchor, problem, pride, description, song, attributes, skills, items, base64Image)
+                val talesSheet = TalesGeneralInfo(name, type, age, luckPoints, drive, anchor, problem, pride, description, song, relationships, hideout, attributes, skills, items, base64Image)
 
                 saveItemIntoDatabase(talesSheet)
             }
