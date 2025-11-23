@@ -1,5 +1,6 @@
 package com.ifpr.androidapptemplate.ui.sheet
 
+import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.util.Base64
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -24,6 +26,7 @@ import com.ifpr.androidapptemplate.baseclasses.TalesConditions
 import com.ifpr.androidapptemplate.baseclasses.TalesGeneralInfo
 import com.ifpr.androidapptemplate.baseclasses.TalesItems
 import com.ifpr.androidapptemplate.baseclasses.TalesSkills
+import com.ifpr.androidapptemplate.databinding.DialogRollBinding
 import com.ifpr.androidapptemplate.databinding.FragmentDashboardBinding
 import com.ifpr.androidapptemplate.databinding.FragmentSheetBinding
 import com.ifpr.androidapptemplate.ui.dashboard.DashboardViewModel
@@ -64,20 +67,32 @@ class SheetFragment : Fragment() {
     //Perícias
     //Corpo
     private lateinit var sheetCharSneak: EditText
+    private lateinit var sheetCharSneakBtn: ImageButton
     private lateinit var sheetCharForce: EditText
+    private lateinit var sheetCharForceBtn: ImageButton
     private lateinit var sheetCharMove: EditText
+    private lateinit var sheetCharMoveBtn: ImageButton
     //Tecnologia
     private lateinit var sheetCharTinker: EditText
+    private lateinit var sheetCharTinkerBtn: ImageButton
     private lateinit var sheetCharProgram: EditText
+    private lateinit var sheetCharProgramBtn: ImageButton
     private lateinit var sheetCharCalculate: EditText
+    private lateinit var sheetCharCalculateBtn: ImageButton
     //Coração
     private lateinit var sheetCharContact: EditText
+    private lateinit var sheetCharContactBtn: ImageButton
     private lateinit var sheetCharCharm: EditText
+    private lateinit var sheetCharCharmBtn: ImageButton
     private lateinit var sheetCharLead: EditText
+    private lateinit var sheetCharLeadBtn: ImageButton
     //Tecnologia
     private lateinit var sheetCharInvestigate: EditText
+    private lateinit var sheetCharInvestigateBtn: ImageButton
     private lateinit var sheetCharComprehend: EditText
+    private lateinit var sheetCharComprehendBtn: ImageButton
     private lateinit var sheetCharEmpathize: EditText
+    private lateinit var sheetCharEmpathizeBtn: ImageButton
 
     //Relacionamentos
     private lateinit var sheetCharRelationships: EditText
@@ -218,42 +233,51 @@ class SheetFragment : Fragment() {
             //Corpo
         sheetCharSneak = binding.sheetViewEditSneak
         sheetCharSneak.setText(data.skills?.sneak.toString())
+        sheetCharSneakBtn = binding.btnRollSneak
 
         sheetCharForce = binding.sheetViewEditForce
         sheetCharForce.setText(data.skills?.force.toString())
+        sheetCharForceBtn = binding.btnRollForce
 
         sheetCharMove = binding.sheetViewEditMove
         sheetCharMove.setText(data.skills?.move.toString())
+        sheetCharMoveBtn = binding.btnRollMove
 
-            //Tecnologia
         sheetCharTinker = binding.sheetViewEditTinker
         sheetCharTinker.setText(data.skills?.tinker.toString())
+        sheetCharTinkerBtn = binding.btnRollTinker
 
         sheetCharProgram = binding.sheetViewEditProgram
         sheetCharProgram.setText(data.skills?.program.toString())
+        sheetCharProgramBtn = binding.btnRollProgram
 
         sheetCharCalculate = binding.sheetViewEditCalculate
         sheetCharCalculate.setText(data.skills?.calculate.toString())
+        sheetCharCalculateBtn = binding.btnRollCalculate
 
-            //Coração
         sheetCharContact = binding.sheetViewEditContact
         sheetCharContact.setText(data.skills?.contact.toString())
+        sheetCharContactBtn = binding.btnRollContact
 
         sheetCharCharm = binding.sheetViewEditCharm
         sheetCharCharm.setText(data.skills?.charm.toString())
+        sheetCharCharmBtn = binding.btnRollCharm
 
         sheetCharLead = binding.sheetViewEditLead
         sheetCharLead.setText(data.skills?.lead.toString())
+        sheetCharLeadBtn = binding.btnRollLead
 
-            //Mente
         sheetCharInvestigate = binding.sheetViewEditInvestigate
         sheetCharInvestigate.setText(data.skills?.investigate.toString())
+        sheetCharInvestigateBtn = binding.btnRollInvestigate
 
         sheetCharComprehend = binding.sheetViewEditComprehend
         sheetCharComprehend.setText(data.skills?.comprehend.toString())
+        sheetCharComprehendBtn = binding.btnRollComprehend
 
         sheetCharEmpathize = binding.sheetViewEditEmpathize
         sheetCharEmpathize.setText(data.skills?.empathize.toString())
+        sheetCharEmpathizeBtn = binding.btnRollEmpathize
 
         //Relacionamentos
         sheetCharRelationships = binding.sheetViewEditRelationships
@@ -312,6 +336,23 @@ class SheetFragment : Fragment() {
 
         sheetUpdateBtn = binding.sheetViewSaveUpdateBtn
 
+        //Botões de Rolagem
+        setupRollButton(sheetCharSneakBtn, sheetCharSneak, sheetCharBody, "Furtividade")
+        setupRollButton(sheetCharForceBtn, sheetCharForce, sheetCharBody, "Força")
+        setupRollButton(sheetCharMoveBtn, sheetCharMove, sheetCharBody, "Movimentação")
+
+        setupRollButton(sheetCharTinkerBtn, sheetCharTinker, sheetCharTech, "Mecânica")
+        setupRollButton(sheetCharProgramBtn, sheetCharProgram, sheetCharTech, "Programação")
+        setupRollButton(sheetCharCalculateBtn, sheetCharCalculate, sheetCharTech, "Cálculo")
+
+        setupRollButton(sheetCharContactBtn, sheetCharContact, sheetCharHeart, "Contatos")
+        setupRollButton(sheetCharCharmBtn, sheetCharCharm, sheetCharHeart, "Charme")
+        setupRollButton(sheetCharLeadBtn, sheetCharLead, sheetCharHeart, "Liderança")
+
+        setupRollButton(sheetCharInvestigateBtn, sheetCharInvestigate, sheetCharMind, "Investigação")
+        setupRollButton(sheetCharComprehendBtn, sheetCharComprehend, sheetCharMind, "Conhecimento")
+        setupRollButton(sheetCharEmpathizeBtn, sheetCharEmpathize, sheetCharMind, "Empatia")
+
         sheetUpdateBtn.setOnClickListener {
             updateSheet(fichaId)
         }
@@ -328,6 +369,51 @@ class SheetFragment : Fragment() {
             null
         }
     }
+
+    private fun setupRollButton(button: ImageButton, skill: EditText, attribute: EditText, title: String) {
+
+        button.setOnClickListener {
+            val skillValue = skill.text.toString().trim().toIntOrNull() ?: 0
+            val attributeValue = attribute.text.toString().trim().toIntOrNull() ?: 0
+
+            rollAttributes(title, skillValue + attributeValue)
+        }
+
+    }
+
+    private fun rollDice(quantity: Int): List<Int> {
+        return List(quantity) {(1..6).random()}
+    }
+
+    private fun countSuccesses(results: List<Int>): Int {
+        return results.count { it >= 6 }
+    }
+
+    private fun showRollDialog(title: String, results: List<Int>, successes: Int){
+        val dialog = Dialog(requireContext())
+
+        val dialogBinding = DialogRollBinding.inflate(layoutInflater)
+
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.dialogTitle.text = title
+        dialogBinding.dialogResults.text = "" +
+                "Rolagem: ${results.joinToString(", ")}\nSucessos: $successes"
+
+        dialogBinding.dialogOk.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun rollAttributes(title:String, value: Int) {
+        val results = rollDice(value)
+        val success = countSuccesses(results)
+
+        showRollDialog(title, results, success)
+    }
+
 
     private fun updateSheet(fichaId: String){
 
