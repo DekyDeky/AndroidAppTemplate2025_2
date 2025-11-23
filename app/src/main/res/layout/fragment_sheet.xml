@@ -146,7 +146,7 @@
                 android:layout_weight="1"
                 android:hint="Orgulho" />
 
-            <CheckBox android:id="@+id/checkbox_meat"
+            <CheckBox android:id="@+id/checkbox_pride"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -314,7 +314,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"/>
 
-                    <CheckBox android:id="@+id/sheet_view_edit_upset"
+                    <CheckBox android:id="@+id/checkbox_view_edit_upset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -446,7 +446,7 @@
                     />
 
                 <ImageButton
-                    android:id="@+id/btn_roll_stealth"
+                    android:id="@+id/btn_roll_sneak"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -1048,11 +1048,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
 
-
             </LinearLayout>
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/sheet_view_saveUpdateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Atualizar Personagem"
+            app:layout_constraintTop_toBottomOf="@id/sheet_view_experience"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

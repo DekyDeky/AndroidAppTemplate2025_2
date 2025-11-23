@@ -244,6 +244,10 @@ class HomeFragment : Fragment() {
                         } catch (_: Exception) {}
                     }
 
+                    sheetOpenBtn.setOnClickListener {
+                        openCharSheet(item)
+                    }
+
                     container.addView(itemView)
                 }
 
