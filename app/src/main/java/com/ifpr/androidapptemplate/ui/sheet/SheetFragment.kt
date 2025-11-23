@@ -13,8 +13,17 @@ import androidx.appcompat.R
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.util.Base64
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.ifpr.androidapptemplate.baseclasses.TalesAttributes
+import com.ifpr.androidapptemplate.baseclasses.TalesConditions
 import com.ifpr.androidapptemplate.baseclasses.TalesGeneralInfo
+import com.ifpr.androidapptemplate.baseclasses.TalesItems
+import com.ifpr.androidapptemplate.baseclasses.TalesSkills
 import com.ifpr.androidapptemplate.databinding.FragmentDashboardBinding
 import com.ifpr.androidapptemplate.databinding.FragmentSheetBinding
 import com.ifpr.androidapptemplate.ui.dashboard.DashboardViewModel
@@ -86,6 +95,9 @@ class SheetFragment : Fragment() {
     private lateinit var sheetCharItem5: EditText
     private lateinit var sheetCharItem5Bonus: EditText
 
+    //Esconderijo
+    private lateinit var sheetCharHideout: EditText
+
     //Experiência
     private lateinit var sheetCharXp1: CheckBox
     private lateinit var sheetCharXp2: CheckBox
@@ -97,7 +109,9 @@ class SheetFragment : Fragment() {
     private lateinit var sheetCharXp8: CheckBox
     private lateinit var sheetCharXp9: CheckBox
     private lateinit var sheetCharXp10: CheckBox
-
+    private lateinit var sheetUpdateBtn: Button
+    lateinit var fichaId: String
+    private lateinit var xpChecks : List<CheckBox>
 
 
     private val binding get() = _binding!!
@@ -106,6 +120,7 @@ class SheetFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         data = arguments?.getSerializable("charData") as TalesGeneralInfo
+        fichaId = arguments?.getString("fichaId") ?: ""
     }
 
     override fun onCreateView(
@@ -114,14 +129,25 @@ class SheetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val sheetViewModel = ViewModelProvider (this).get(SheetViewModel::class.java)
-
 
         _binding = FragmentSheetBinding.inflate(inflater, container, false)
         val binding = _binding!!
         val root: View = binding.root
 
         val imageBase64 = data.base64Image
+
+        xpChecks = listOf(
+            binding.checkboxXp1,
+            binding.checkboxXp2,
+            binding.checkboxXp3,
+            binding.checkboxXp4,
+            binding.checkboxXp5,
+            binding.checkboxXp6,
+            binding.checkboxXp7,
+            binding.checkboxXp8,
+            binding.checkboxXp9,
+            binding.checkboxXp10
+        )
 
         if (!imageBase64.isNullOrEmpty()) {
             val bitmap = base64Bitmap(imageBase64)
@@ -268,6 +294,10 @@ class SheetFragment : Fragment() {
         sheetCharItem5Bonus = binding.sheetViewEditItem5bonus
         sheetCharItem5Bonus.setText("+" + data.items?.item5Bonus.toString())
 
+            // Esconderijo
+        sheetCharHideout = binding.sheetViewEditHideout
+        sheetCharHideout.setText(data.hideout)
+
             //Experiência
         sheetCharXp1 = binding.checkboxXp1
         sheetCharXp2 = binding.checkboxXp2
@@ -280,8 +310,11 @@ class SheetFragment : Fragment() {
         sheetCharXp9 = binding.checkboxXp9
         sheetCharXp10 = binding.checkboxXp10
 
+        sheetUpdateBtn = binding.sheetViewSaveUpdateBtn
 
-
+        sheetUpdateBtn.setOnClickListener {
+            updateSheet(fichaId)
+        }
 
         return root
     }
@@ -294,6 +327,92 @@ class SheetFragment : Fragment() {
             e.printStackTrace()
             null
         }
+    }
+
+    private fun updateSheet(fichaId: String){
+
+        val updatedAttributes = TalesAttributes(
+            sheetCharBody.text.toString().trim().toInt(),
+            sheetCharTech.text.toString().trim().toInt(),
+            sheetCharHeart.text.toString().trim().toInt(),
+            sheetCharMind.text.toString().trim().toInt()
+        )
+
+        val updatedSkills = TalesSkills(
+            sheetCharSneak.text.toString().trim().toInt(),
+            sheetCharForce.text.toString().trim().toInt(),
+            sheetCharMove.text.toString().trim().toInt(),
+            sheetCharTinker.text.toString().trim().toInt(),
+            sheetCharProgram.text.toString().trim().toInt(),
+            sheetCharCalculate.text.toString().trim().toInt(),
+            sheetCharContact.text.toString().trim().toInt(),
+            sheetCharCharm.text.toString().trim().toInt(),
+            sheetCharLead.text.toString().trim().toInt(),
+            sheetCharInvestigate.text.toString().trim().toInt(),
+            sheetCharComprehend.text.toString().trim().toInt(),
+            sheetCharEmpathize.text.toString().trim().toInt()
+        )
+
+        val updatedItems = TalesItems(
+            sheetCharIconicItem.text.toString().trim(),
+            2,
+            sheetCharItem1.text.toString().trim(),
+            sheetCharItem1Bonus.text.toString().trim().toInt(),
+            sheetCharItem2.text.toString().trim(),
+            sheetCharItem2Bonus.text.toString().trim().toInt(),
+            sheetCharItem3.text.toString().trim(),
+            sheetCharItem3Bonus.text.toString().trim().toInt(),
+            sheetCharItem4.text.toString().trim(),
+            sheetCharItem4Bonus.text.toString().trim().toInt(),
+            sheetCharItem5.text.toString().trim(),
+            sheetCharItem5Bonus.text.toString().trim().toInt()
+        )
+
+        val updatedConditions = TalesConditions(
+            sheetCharUpset.isChecked,
+            sheetCharScared.isChecked,
+            sheetCharExhausted.isChecked,
+            sheetCharInjured.isChecked,
+            sheetCharBroken.isChecked
+        )
+
+        val xpCount = xpChecks.count { it.isChecked }
+
+        val updatedSheet = TalesGeneralInfo(
+            sheetCharName.text.toString().trim(),
+            sheetCharType.text.toString().trim(),
+            sheetCharAge.text.toString().trim().toInt(),
+            sheetCharLP.text.toString().trim().toInt(),
+            sheetCharDrive.text.toString().trim(),
+            sheetCharAnchor.text.toString().trim(),
+            sheetCharProblem.text.toString().trim(),
+            sheetCharPride.text.toString().trim(),
+            sheetCharDescription.text.toString().trim(),
+            sheetCharSong.text.toString().trim(),
+            sheetCharRelationships.text.toString().trim(),
+            sheetCharHideout.text.toString().trim(),
+            updatedAttributes,
+            updatedSkills,
+            updatedItems,
+            data.base64Image,
+            data.imageUrl,
+            updatedConditions,
+            xpCount,
+            sheetCharPrideUser.isChecked
+        )
+
+        val database = FirebaseDatabase.getInstance().reference
+        val uid = FirebaseAuth.getInstance().uid!!
+
+        database.child("fichas").child(uid).child(fichaId)
+            .setValue(updatedSheet)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Ficha Atualizada!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "Erro ao atualizar a ficha!", Toast.LENGTH_SHORT).show()
+            }
+
     }
 
 }

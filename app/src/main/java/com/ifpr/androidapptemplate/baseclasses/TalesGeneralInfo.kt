@@ -21,5 +21,6 @@ data class TalesGeneralInfo(
     val base64Image: String? = null,
     val imageUrl: String? = null,
     var conditions: TalesConditions? = null,
-    var experience: Int? = 0
+    var experience: Int? = 0,
+    var prideCheck: Boolean = false
 ) : Serializable

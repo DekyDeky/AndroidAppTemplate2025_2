@@ -820,10 +820,10 @@
                 android:id="@+id/sheet_view_edit_relationships"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="6"
                 android:gravity="top"
+                android:hint="Criança 1..."
                 android:inputType="textMultiLine"
-                android:hint="Criança 1..."/>
+                android:minLines="6" />
 
         </LinearLayout>
 
@@ -974,6 +974,35 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/sheet_view_hideout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sheet_view_items">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Esconderijo"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/sheet_view_edit_hideout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="5"
+                android:inputType="textMultiLine"
+                android:gravity="start"
+                android:hint="Casa na árvore..."/>
+
+        </LinearLayout>
+
         <!-- Experiência -->
         <LinearLayout
             android:id="@+id/sheet_view_experience"
@@ -983,7 +1012,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sheet_view_items">
+            app:layout_constraintTop_toBottomOf="@id/sheet_view_hideout">
 
             <TextView
                 android:layout_width="match_parent"

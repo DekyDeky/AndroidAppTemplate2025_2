@@ -245,7 +245,9 @@ class HomeFragment : Fragment() {
                     }
 
                     sheetOpenBtn.setOnClickListener {
-                        openCharSheet(item)
+                        val fichaKey = itemSnapshot.key
+
+                        openCharSheet(item, fichaKey!!)
                     }
 
                     container.addView(itemView)
@@ -259,9 +261,10 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun openCharSheet(talesSheet: TalesGeneralInfo){
+    private fun openCharSheet(talesSheet: TalesGeneralInfo, fichaKey: String){
         val bundle = Bundle()
         bundle.putSerializable("charData", talesSheet)
+        bundle.putString("fichaId", fichaKey)
 
         val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
         navController.navigate(R.id.navigation_char_sheet, bundle)
