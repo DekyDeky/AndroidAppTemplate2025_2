@@ -5,12 +5,12 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_campaigns"
-        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaingFragment"
-        android:label="@string/title_campaigns"
-        tools:layout="@layout/fragment_campaign"
-        />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_campaigns"-->
+<!--        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaingFragment"-->
+<!--        android:label="@string/title_campaigns"-->
+<!--        tools:layout="@layout/fragment_campaign"-->
+<!--        />-->
 
     <fragment
         android:id="@+id/navigation_home"
@@ -23,12 +23,6 @@
         android:name="com.ifpr.androidapptemplate.ui.dashboard.DashboardFragment"
         android:label="@string/title_sheets"
         tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.ifpr.androidapptemplate.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
 
     <fragment
         android:id="@+id/navigation_profile"

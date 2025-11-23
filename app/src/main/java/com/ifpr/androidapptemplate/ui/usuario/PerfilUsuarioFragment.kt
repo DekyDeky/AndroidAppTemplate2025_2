@@ -1,6 +1,9 @@
 package com.ifpr.androidapptemplate.ui.usuario
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -83,11 +86,6 @@ class PerfilUsuarioFragment : Fragment() {
             registerEmailEditText.isEnabled = false
         }
 
-        user?.let {
-            // Exibe a foto do perfil usando a biblioteca Glide
-            Glide.with(this).load(it.photoUrl).into(userProfileImageView)
-        }
-
         registerButton.setOnClickListener {
             updateUser()
         }
@@ -130,6 +128,14 @@ class PerfilUsuarioFragment : Fragment() {
         _binding = null
     }
 
+    private fun base64ToBitmap(base64: String): Bitmap? {
+        return try {
+            val decodedBytes = Base64.decode(base64, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     fun recuperarDadosUsuario(usuarioKey: String) {
         val databaseReference = FirebaseDatabase.getInstance().getReference("users")
@@ -142,6 +148,13 @@ class PerfilUsuarioFragment : Fragment() {
                     usuario?.let {
                         registerEnderecoEditText.setText(it.endereco ?: "")
                         registerTelefoneEditText.setText(it.telefone ?: "")
+
+                        if(!it.imageBase64.isNullOrEmpty()) {
+                            val bitmap = base64ToBitmap(it.imageBase64!!)
+                            bitmap?.let { bmp ->
+                                userProfileImageView.setImageBitmap(bmp)
+                            }
+                        }
                     }
                 }
             }
@@ -170,23 +183,42 @@ class PerfilUsuarioFragment : Fragment() {
     }
 
     private fun updateProfile(user: FirebaseUser?, displayName: String, endereco: String, telefone: String) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(displayName)
-            .build()
 
-        val usuario = Usuario(user?.uid.toString() , displayName, user?.email, endereco, telefone )
+        if (user == null) return
 
-        user?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    saveUserToDatabase(usuario)
-                    Toast.makeText(context, "Nome do usuario alterado com sucesso.",
-                        Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Não foi possivel alterar o nome do usuario.",
-                        Toast.LENGTH_SHORT).show()
+        val uid = user.uid
+        val db = FirebaseDatabase.getInstance().getReference("users")
+
+        db.child(uid).get().addOnSuccessListener { snapshot ->
+            val antigo = snapshot.getValue(Usuario::class.java)
+
+            val usuariosAtualizados = Usuario(
+                key = uid,
+                nome = displayName,
+                email = user.email,
+                endereco = endereco,
+                telefone = telefone,
+                imageBase64 = antigo?.imageBase64 // <-- mantém a foto antiga corretamente
+            )
+
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName)
+                .build()
+
+            user.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        saveUserToDatabase(usuariosAtualizados)
+                        Toast.makeText(context, "Nome do usuario alterado com sucesso.",
+                            Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Não foi possivel alterar o nome do usuario.",
+                            Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        }
+
+
     }
 
     private fun saveUserToDatabase(usuario: Usuario) {

@@ -379,7 +379,7 @@ class DashboardFragment : Fragment() {
         if (name.isEmpty() || type.isEmpty() || drive.isEmpty() || anchor.isEmpty() ||
             problem.isEmpty() || pride.isEmpty() || description.isEmpty() || song.isEmpty() ||
             body == null || tech == null || heart == null || mind == null ||
-            iconicItem.isNullOrEmpty() || age == 0 || luckPoints == 0) {
+            iconicItem.isNullOrEmpty() || age == 0) {
 
             Toast.makeText(context, "Por favor, preencha todos os campos obrigatórios", Toast.LENGTH_SHORT)
                 .show()
@@ -566,8 +566,6 @@ class DashboardFragment : Fragment() {
             }
         }
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

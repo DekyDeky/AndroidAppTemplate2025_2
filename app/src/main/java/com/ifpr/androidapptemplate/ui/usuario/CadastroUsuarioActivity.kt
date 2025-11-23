@@ -1,20 +1,32 @@
 package com.ifpr.androidapptemplate.ui.usuario
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.ifpr.androidapptemplate.R
+import com.ifpr.androidapptemplate.baseclasses.Usuario
+import com.ifpr.androidapptemplate.ui.dashboard.DashboardFragment
 
 
 class CadastroUsuarioActivity  : AppCompatActivity() {
+    private lateinit var registerImgView: ImageView
+    private lateinit var registerImgSelect: Button
+    private var imageUri: Uri? = null
     private lateinit var textCadastroUsuarioTitle: TextView
     private lateinit var registerNameEditText: EditText
     private lateinit var registerEmailEditText: EditText
@@ -25,6 +37,10 @@ class CadastroUsuarioActivity  : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
+    companion object {
+        private const val PICK_IMAGE_REQUEST = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro_usuario)
@@ -32,6 +48,8 @@ class CadastroUsuarioActivity  : AppCompatActivity() {
         // Inicializa o Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        registerImgView = findViewById(R.id.registerImgView)
+        registerImgSelect = findViewById(R.id.registerImgSelect)
         textCadastroUsuarioTitle = findViewById(R.id.textCadastroUsuarioTitle)
         registerNameEditText = findViewById(R.id.registerNameEditText)
         registerEmailEditText = findViewById(R.id.registerEmailEditText)
@@ -40,6 +58,10 @@ class CadastroUsuarioActivity  : AppCompatActivity() {
         registerButton = findViewById(R.id.salvarButton)
         sairButton = findViewById(R.id.sairButton)
 
+        registerImgSelect.setOnClickListener {
+            openFileChooser()
+        }
+
         registerButton.setOnClickListener {
             createAccount()
         }
@@ -47,9 +69,31 @@ class CadastroUsuarioActivity  : AppCompatActivity() {
         sairButton.setOnClickListener {
             finish()
         }
+
     }
 
+    private fun openFileChooser() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
+            && data != null && data.data != null
+        ) {
+            imageUri = data.data
+            Glide.with(this).load(imageUri).into(registerImgView)
+        }
+    }
+
+    private fun uriToBase64(uri: Uri): String {
+        val inputStream = contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes() ?: return ""
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
+    }
 
     private fun createAccount() {
         val name = registerNameEditText.text.toString().trim()
@@ -83,6 +127,26 @@ class CadastroUsuarioActivity  : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         val user = auth.currentUser
+
+                        if (user == null) {
+                            Toast.makeText(this, "Erro inesperado: usuário nulo", Toast.LENGTH_LONG).show()
+                            return@addOnCompleteListener
+                        }
+
+
+                        val uid = user.uid
+
+                        val imageBase64 = if (imageUri != null) uriToBase64(imageUri!!) else ""
+
+                        val userData = mapOf(
+                            "name" to name,
+                            "email" to email,
+                            "imageBase64" to imageBase64
+                        )
+
+                        val db = FirebaseDatabase.getInstance().getReference("users")
+                        db.child(uid).setValue(userData)
+
                         updateProfile(user, name)
                         sendEmailVerification(user)
                     } else {

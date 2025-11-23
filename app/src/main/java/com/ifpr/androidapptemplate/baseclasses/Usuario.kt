@@ -6,5 +6,6 @@ data class Usuario(
     var nome: String? = null,
     var email: String? = null,
     var endereco: String? = null,
-    var telefone: String? = null //novo campo
+    var telefone: String? = null, //novo campo
+    var imageBase64: String? = null
 )
