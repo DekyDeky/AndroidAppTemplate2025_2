@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ifpr.androidapptemplate.R
+import com.ifpr.androidapptemplate.baseclasses.TalesCampaign
 import com.ifpr.androidapptemplate.baseclasses.TalesGeneralInfo
 import com.ifpr.androidapptemplate.databinding.FragmentHomeBinding
 import com.ifpr.androidapptemplate.ui.ai.AiLogicActivity
@@ -58,6 +59,10 @@ class HomeFragment : Fragment() {
 
         val container = view.findViewById<LinearLayout>(R.id.itemContainer)
         carregarFichas(container)
+
+        val campaingContainer = view.findViewById<LinearLayout>(R.id.itemContainerCampaigns)
+        carregarCampanhas(campaingContainer)
+
 
         val fab = view.findViewById<FloatingActionButton>(R.id.fab_ai)
 
@@ -197,7 +202,6 @@ class HomeFragment : Fragment() {
 
                 container.removeAllViews()
 
-
                 for (itemSnapshot in snapshot.children) {
                     val item = itemSnapshot.getValue(TalesGeneralInfo::class.java) ?: continue
 
@@ -261,6 +265,63 @@ class HomeFragment : Fragment() {
         })
     }
 
+    fun carregarCampanhas(container: LinearLayout){
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val databaseRef = FirebaseDatabase.getInstance().getReference("campanhas")
+
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                container.removeAllViews()
+
+                for (itemSnapshot in snapshot.children) {
+                    val item = itemSnapshot.getValue(TalesCampaign::class.java) ?: continue
+
+                    if(item.ownerUid != uid) continue
+
+                    val itemView = LayoutInflater.from(container.context)
+                        .inflate(R.layout.item_campaing_template, container, false)
+
+                    val imageView = itemView.findViewById<ImageView>(R.id.image_campaign)
+                    val campaignNameLabel = itemView.findViewById<TextView>(R.id.campaignNameLabel)
+                    val campaignTypeLabel = itemView.findViewById<TextView>(R.id.campaingTypeLabel)
+                    val campaingCodeLabel = itemView.findViewById<TextView>(R.id.campaingCodeLabel)
+                    val campaingDescLabel = itemView.findViewById<TextView>(R.id.campaingDescLabel)
+
+                    val campaignOpenBtn = itemView.findViewById<Button>(R.id.campaignOpenBtn)
+
+                    campaignNameLabel.text = item.nome ?: " Não informado!"
+                    campaignTypeLabel.text = item.type ?: " Não informado!"
+                    campaingCodeLabel.text = item.code ?: " Não criado!"
+                    campaingDescLabel.text = item.description ?: " Não informado!"
+
+                    if (!item.imageUrl.isNullOrEmpty()) {
+                        Glide.with(container.context).load(item.imageUrl).into(imageView)
+                    } else if (!item.base64Image.isNullOrEmpty()) {
+                        try {
+                            val bytes = Base64.decode(item.base64Image, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            imageView.setImageBitmap(bitmap)
+                        } catch (_: Exception) {}
+                    }
+
+                    campaignOpenBtn.setOnClickListener {
+                        val campaignKey = snapshot.key
+
+                        openCampaignView(item, campaignKey!!)
+                    }
+
+                    container.addView(itemView)
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(container.context, "Erro ao carregar dados", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun openCharSheet(talesSheet: TalesGeneralInfo, fichaKey: String){
         val bundle = Bundle()
         bundle.putSerializable("charData", talesSheet)
@@ -268,5 +329,14 @@ class HomeFragment : Fragment() {
 
         val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
         navController.navigate(R.id.navigation_char_sheet, bundle)
+    }
+
+    private fun openCampaignView(talesCampaign: TalesCampaign, campaingKey: String){
+        val bundle = Bundle()
+        bundle.putSerializable("campaingData", talesCampaign)
+        bundle.putString("campaingId", campaingKey)
+
+        val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.navigation_campaign_view, bundle)
     }
 }

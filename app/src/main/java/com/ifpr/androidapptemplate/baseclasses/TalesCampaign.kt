@@ -1,5 +1,7 @@
 package com.ifpr.androidapptemplate.baseclasses
 
+import java.io.Serializable
+
 data class TalesCampaign(
     var nome: String? = null,
     var type: String? = null,
@@ -8,4 +10,4 @@ data class TalesCampaign(
     var base64Image: String? = null,
     val imageUrl: String? = null,
     var ownerUid: String? = null
-)
+) : Serializable

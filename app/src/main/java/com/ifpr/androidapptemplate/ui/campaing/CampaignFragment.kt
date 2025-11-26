@@ -22,9 +22,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
 import com.ifpr.androidapptemplate.baseclasses.TalesCampaign
 import com.ifpr.androidapptemplate.databinding.FragmentCampaignBinding
-import com.ifpr.androidapptemplate.ui.dashboard.DashboardFragment
 
-class CampaingFragment : Fragment() {
+class CampaignFragment : Fragment() {
     private var _binding: FragmentCampaignBinding? = null
 
     private lateinit var campaingImageView: ImageView
@@ -95,7 +94,7 @@ class CampaingFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, CampaingFragment.Companion.PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, CampaignFragment.Companion.PICK_IMAGE_REQUEST)
     }
 
     private fun saveCampaign(){
@@ -137,7 +136,7 @@ class CampaingFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CampaingFragment.Companion.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
+        if (requestCode == CampaignFragment.Companion.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
             && data != null && data.data != null
         ) {
             imageUri = data.data

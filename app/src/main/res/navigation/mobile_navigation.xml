@@ -5,12 +5,12 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_campaigns"-->
-<!--        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaingFragment"-->
-<!--        android:label="@string/title_campaigns"-->
-<!--        tools:layout="@layout/fragment_campaign"-->
-<!--        />-->
+    <fragment
+        android:id="@+id/navigation_campaigns"
+        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaignFragment"
+        android:label="@string/title_campaigns"
+        tools:layout="@layout/fragment_campaign"
+        />
 
     <fragment
         android:id="@+id/navigation_home"
@@ -35,4 +35,10 @@
         android:name="com.ifpr.androidapptemplate.ui.sheet.SheetFragment"
         android:label="Ficha Completa"
         tools:layout="@layout/fragment_sheet" />
+
+    <fragment
+        android:id="@+id/navigation_campaign_view"
+        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaignViewFragment"
+        android:label="Campanha"
+        tools:layout="@layout/fragment_campaing_view" />
 </navigation>

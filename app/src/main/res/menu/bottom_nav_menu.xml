@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_sheet_black_24dp"
         android:title="@string/title_sheets" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_campaigns"-->
-<!--        android:icon="@drawable/ic_campaign_black_24dp"-->
-<!--        android:title="@string/title_campaigns" />-->
+    <item
+        android:id="@+id/navigation_campaigns"
+        android:icon="@drawable/ic_campaign_black_24dp"
+        android:title="@string/title_campaigns" />
 
     <item
         android:id="@+id/navigation_home"
