@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.appcompat.R
+import com.ifpr.androidapptemplate.R
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import android.util.Base64
@@ -30,6 +30,7 @@ import com.ifpr.androidapptemplate.databinding.DialogRollBinding
 import com.ifpr.androidapptemplate.databinding.FragmentDashboardBinding
 import com.ifpr.androidapptemplate.databinding.FragmentSheetBinding
 import com.ifpr.androidapptemplate.ui.dashboard.DashboardViewModel
+import kotlin.intArrayOf
 
 class SheetFragment : Fragment() {
 
@@ -143,8 +144,6 @@ class SheetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         _binding = FragmentSheetBinding.inflate(inflater, container, false)
         val binding = _binding!!
         val root: View = binding.root
@@ -358,6 +357,27 @@ class SheetFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.sheetToolbar
+
+        val typedArray = requireContext().theme.obtainStyledAttributes(
+            intArrayOf(R.attr.back_arrow)
+        )
+        val backArrowDrawable = typedArray.getDrawable(0)
+        typedArray.recycle()
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(backArrowDrawable)
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
     }
 
     private fun base64Bitmap(base64: String): Bitmap? {

@@ -217,10 +217,7 @@ class PerfilUsuarioFragment : Fragment() {
                     }
                 }
         }
-
-
     }
-
     private fun saveUserToDatabase(usuario: Usuario) {
         if (usuario.key != null) {
             usersReference.child(usuario.key.toString()).setValue(usuario)

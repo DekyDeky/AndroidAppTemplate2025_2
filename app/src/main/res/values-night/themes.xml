@@ -14,5 +14,7 @@
         <!-- Customize your theme here. -->
 
         <item name="dice">@drawable/ic_dice_24dp</item>
+        <item name="back_arrow">@drawable/go_back_white</item>
+
     </style>
 </resources>

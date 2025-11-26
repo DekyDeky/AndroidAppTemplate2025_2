@@ -108,7 +108,12 @@ class CampaingFragment : Fragment() {
             return
         }
 
-        val talesCampaing = TalesCampaign(campaignName, campaingType, campaingDescription)
+        val talesCampaing = TalesCampaign(
+            campaignName,
+            campaingType,
+            campaingDescription,
+            generateInviteCode()
+        )
         uploadDataToFirestone(talesCampaing)
     }
 
@@ -157,5 +162,12 @@ class CampaingFragment : Fragment() {
         } else {
             Toast.makeText(context, "Erro ao gerar ID da Campanha", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun generateInviteCode(length: Int = 6): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return (1..length)
+            .map { chars.random() }
+            .joinToString("")
     }
 }
