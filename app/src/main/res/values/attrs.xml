@@ -2,4 +2,5 @@
 <resources>
     <attr name="dice" format="reference"/>
     <attr name="back_arrow" format="reference"/>
+    <attr name="add_sign" format="reference"/>
 </resources>

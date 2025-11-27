@@ -64,7 +64,7 @@
         android:layout_marginBottom="25dp"
         android:layout_marginRight="16dp"
         android:contentDescription="Abrir IA"
-        android:src="@drawable/moth"
+        android:src="?attr/add_sign"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

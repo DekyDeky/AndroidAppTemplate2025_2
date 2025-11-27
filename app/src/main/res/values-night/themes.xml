@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.AndroidAppTemplate" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/cream</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/cream</item>
+        <item name="colorSecondaryVariant">@color/cream</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
@@ -15,6 +15,6 @@
 
         <item name="dice">@drawable/ic_dice_24dp</item>
         <item name="back_arrow">@drawable/go_back_white</item>
-
+        <item name="add_sign">@drawable/ic_add_white_24dp</item>
     </style>
 </resources>
