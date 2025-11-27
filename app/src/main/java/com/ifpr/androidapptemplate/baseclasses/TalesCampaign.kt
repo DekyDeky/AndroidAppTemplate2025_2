@@ -9,5 +9,6 @@ data class TalesCampaign(
     var code: String? = null,
     var base64Image: String? = null,
     val imageUrl: String? = null,
-    var ownerUid: String? = null
+    var ownerUid: String? = null,
+    var jogadores: MutableMap<String, MutableMap<String, Boolean>> = mutableMapOf()
 ) : Serializable

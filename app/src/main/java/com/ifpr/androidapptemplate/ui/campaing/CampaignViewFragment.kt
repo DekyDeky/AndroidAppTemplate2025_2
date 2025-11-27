@@ -14,9 +14,15 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.ifpr.androidapptemplate.R
 import com.ifpr.androidapptemplate.baseclasses.TalesCampaign
+import com.ifpr.androidapptemplate.baseclasses.TalesGeneralInfo
 import com.ifpr.androidapptemplate.databinding.FragmentCampaingViewBinding
 import com.ifpr.androidapptemplate.util.loadImage
 
@@ -85,6 +91,10 @@ class CampaignViewFragment : Fragment() {
 
         }
 
+        val allSheetsCampaign = dataCampaing.jogadores.values.flatMap { it.keys }
+
+        loadPlayersOnCampaign(playersContainer, allSheetsCampaign)
+
         return root
     }
 
@@ -114,6 +124,67 @@ class CampaignViewFragment : Fragment() {
         val clip = ClipData.newPlainText("text", text)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(requireContext(), "Copiado!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun loadPlayersOnCampaign(container: LinearLayout, sheetsId: List<String>) {
+
+        val ref = FirebaseDatabase.getInstance().getReference("fichas")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                container.removeAllViews()
+
+                for (uidSnapshot in snapshot.children) {            // fichas -> uid
+                    for (sheetSnapshot in uidSnapshot.children) {  // fichas -> uid -> sheetId
+
+                        val fichaId = sheetSnapshot.key ?: continue
+
+                        // filtra apenas fichas que estão na campanha
+                        if (!sheetsId.contains(fichaId)) continue
+
+                        val sheet = sheetSnapshot.getValue(TalesGeneralInfo::class.java) ?: continue
+
+                        val view = LayoutInflater.from(container.context)
+                            .inflate(R.layout.item_template, container, false)
+
+                        val imageViewSheet = view.findViewById<ImageView>(R.id.item_image)
+
+                        loadImage(sheet.base64Image, sheet.imageUrl, imageViewSheet)
+
+                        view.findViewById<TextView>(R.id.sheet_charName).text = sheet.name
+                        view.findViewById<TextView>(R.id.sheet_charAge).text = sheet.age.toString()
+                        view.findViewById<TextView>(R.id.sheet_charType).text = sheet.type
+                        view.findViewById<TextView>(R.id.sheet_charDescription).text = sheet.description
+                        view.findViewById<TextView>(R.id.sheet_charBody).text = sheet.attributes?.body.toString()
+                        view.findViewById<TextView>(R.id.sheet_charTech).text = sheet.attributes?.tech.toString()
+                        view.findViewById<TextView>(R.id.sheet_charHeart).text = sheet.attributes?.heart.toString()
+                        view.findViewById<TextView>(R.id.sheet_charMind).text = sheet.attributes?.mind.toString()
+
+                        val sheetOpenBtn = view.findViewById<Button>(R.id.sheet_openBtn)
+
+                        sheetOpenBtn.setOnClickListener {
+                            openCharSheet(sheet, fichaId)
+                        }
+
+                        container.addView(view)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+
+    private fun openCharSheet(talesSheet: TalesGeneralInfo, fichaKey: String){
+        val bundle = Bundle()
+        bundle.putSerializable("charData", talesSheet)
+        bundle.putString("fichaId", fichaKey)
+
+        val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.navigation_char_sheet, bundle)
     }
 
     override fun onDestroyView() {
