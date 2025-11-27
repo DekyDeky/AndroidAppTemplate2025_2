@@ -1,6 +1,7 @@
 package com.ifpr.androidapptemplate
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -19,17 +20,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-
+        val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_profile, R.id.navigation_campaigns
-            )
-        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                // Telas onde você QUER ESCONDER o menu
+                R.id.navigation_char_sheet,
+                R.id.navigation_create_campaigns,
+                R.id.navigation_campaign_view,
+                R.id.navigation_create_campaigns,
+                R.id.navigation_dashboard
+                    -> navView.visibility = View.GONE
+
+                // Todas as outras telas exibem o BottomNav
+                else -> navView.visibility = View.VISIBLE
+            }
+        }
+
         navView.setupWithNavController(navController)
+
+
     }
 }
