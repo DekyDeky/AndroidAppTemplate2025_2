@@ -6,11 +6,16 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/navigation_create_campaigns"
+        android:name="com.ifpr.androidapptemplate.ui.campaing.CampaignCreateFragment"
+        android:label="@string/title_campaigns"
+        tools:layout="@layout/fragment_campaign_creation" />
+
+    <fragment
         android:id="@+id/navigation_campaigns"
         android:name="com.ifpr.androidapptemplate.ui.campaing.CampaignFragment"
-        android:label="@string/title_campaigns"
-        tools:layout="@layout/fragment_campaign"
-        />
+        android:label="Campanhas"
+        tools:layout="@layout/fragment_campaign" />
 
     <fragment
         android:id="@+id/navigation_home"

@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -109,77 +110,72 @@ class DashboardFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        itemImageView = binding.imageItem
+        salvarButton = binding.salvarItemButton
+        selectImageButton = binding.buttonSelectImage
 
-        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        itemImageView = view.findViewById(R.id.image_item)
-        salvarButton = view.findViewById(R.id.salvarItemButton)
-        selectImageButton = view.findViewById(R.id.button_select_image)
-//        tarefaEditText = view.findViewById(R.id.tarefaItemEditText)
-        //TODO("Capture aqui os outro campos que foram inseridos no layout. Por exemplo, ate
-        // o momento so foi capturado o endereco (EditText)")
-//        descricaoEditText = view.findViewById(R.id.descricaoItemEditText)
-//        dataInicioEditText = view.findViewById(R.id.dataInicioItemEditText)
-//        dataFimEditText = view.findViewById(R.id.dataFimItemEditText)
+        // Inicializando os campos de EditText com binding
+        sheetCharNameEditText = binding.sheetCharName
+        sheetCharTypeEditText = binding.sheetCharType
+        sheetCharAgeEditText = binding.sheetCharAge
+        sheetCharLuckPointsEditText = binding.sheetCharLuckPoints
+        sheetCharDriveEditText = binding.sheetCharDrive
+        sheetCharAnchorEditText = binding.sheetCharAnchor
+        sheetCharProblemEditText = binding.sheetCharProblem
+        sheetCharPrideEditText = binding.sheetCharPride
+        sheetCharDescriptionEditText = binding.sheetCharDescription
+        sheetCharSongEditText = binding.sheetCharSong
 
-        // Inicializando os campos de EditText com view.findViewById
-        sheetCharNameEditText = view.findViewById(R.id.sheetCharName)
-        sheetCharTypeEditText = view.findViewById(R.id.sheetCharType)
-        sheetCharAgeEditText = view.findViewById(R.id.sheetCharAge)
-        sheetCharLuckPointsEditText = view.findViewById(R.id.sheetCharLuckPoints)
-        sheetCharDriveEditText = view.findViewById(R.id.sheetCharDrive)
-        sheetCharAnchorEditText = view.findViewById(R.id.sheetCharAnchor)
-        sheetCharProblemEditText = view.findViewById(R.id.sheetCharProblem)
-        sheetCharPrideEditText = view.findViewById(R.id.sheetCharPride)
-        sheetCharDescriptionEditText = view.findViewById(R.id.sheetCharDescription)
-        sheetCharSongEditText = view.findViewById(R.id.sheetCharSong)
+// Inicializando os campos de atributos
+        sheetCharBodyEditText = binding.sheetCharBody
+        sheetCharTechEditText = binding.sheetCharTech
+        sheetCharHeartEditText = binding.sheetCharHeart
+        sheetCharMindEditText = binding.sheetCharMind
 
-        // Inicializando os campos de atributos
-        sheetCharBodyEditText = view.findViewById(R.id.sheetCharBody)
-        sheetCharTechEditText = view.findViewById(R.id.sheetCharTech)
-        sheetCharHeartEditText = view.findViewById(R.id.sheetCharHeart)
-        sheetCharMindEditText = view.findViewById(R.id.sheetCharMind)
+// Inicializando os campos de habilidades
+        sheetCharSneakEditText = binding.sheetCharSneak
+        sheetCharForceEditText = binding.sheetCharForce
+        sheetCharMoveEditText = binding.sheetCharMove
+        sheetCharTinkerEditText = binding.sheetCharTinker
+        sheetCharProgramEditText = binding.sheetCharProgram
+        sheetCharCalculateEditText = binding.sheetCharCalculate
+        sheetCharContactEditText = binding.sheetCharContact
+        sheetCharCharmEditText = binding.sheetCharCharm
+        sheetCharLeadEditText = binding.sheetCharLead
+        sheetCharInvestigateEditText = binding.sheetCharInvestigate
+        sheetCharComprehendEditText = binding.sheetCharComprehend
+        sheetCharEmpathizeEditText = binding.sheetCharEmpathize
 
-        // Inicializando os campos de habilidades
-        sheetCharSneakEditText = view.findViewById(R.id.sheetCharSneak)
-        sheetCharForceEditText = view.findViewById(R.id.sheetCharForce)
-        sheetCharMoveEditText = view.findViewById(R.id.sheetCharMove)
-        sheetCharTinkerEditText = view.findViewById(R.id.sheetCharTinker)
-        sheetCharProgramEditText = view.findViewById(R.id.sheetCharProgram)
-        sheetCharCalculateEditText = view.findViewById(R.id.sheetCharCalculate)
-        sheetCharContactEditText = view.findViewById(R.id.sheetCharContact)
-        sheetCharCharmEditText = view.findViewById(R.id.sheetCharCharm)
-        sheetCharLeadEditText = view.findViewById(R.id.sheetCharLead)
-        sheetCharInvestigateEditText = view.findViewById(R.id.sheetCharInvestigate)
-        sheetCharComprehendEditText = view.findViewById(R.id.sheetCharComprehend)
-        sheetCharEmpathizeEditText = view.findViewById(R.id.sheetCharEmpathize)
+// Campo de relacionamentos
+        sheetCharRelationshipsEditText = binding.sheetCharRelationships
 
-        // Inicializando o campo de relacionamentos
-        sheetCharRelationshipsEditText = view.findViewById(R.id.sheetCharRelationships)
+// Campos de itens
+        sheetCharIconicItemEditText = binding.sheetCharIconicItem
+        sheetCharItem1EditText = binding.sheetCharItem1
+        sheetCharItem1BonusEditText = binding.sheetCharItem1Bonus
+        sheetCharItem2EditText = binding.sheetCharItem2
+        sheetCharItem2BonusEditText = binding.sheetCharItem2Bonus
+        sheetCharItem3EditText = binding.sheetCharItem3
+        sheetCharItem3BonusEditText = binding.sheetCharItem3Bonus
+        sheetCharItem4EditText = binding.sheetCharItem4
+        sheetCharItem4BonusEditText = binding.sheetCharItem4Bonus
+        sheetCharItem5EditText = binding.sheetCharItem5
+        sheetCharItem5BonusEditText = binding.sheetCharItem5Bonus
 
-        // Inicializando os campos de itens
-        sheetCharIconicItemEditText = view.findViewById(R.id.sheetCharIconicItem)
-        sheetCharItem1EditText = view.findViewById(R.id.sheetCharItem1)
-        sheetCharItem1BonusEditText = view.findViewById(R.id.sheetCharItem1Bonus)
-        sheetCharItem2EditText = view.findViewById(R.id.sheetCharItem2)
-        sheetCharItem2BonusEditText = view.findViewById(R.id.sheetCharItem2Bonus)
-        sheetCharItem3EditText = view.findViewById(R.id.sheetCharItem3)
-        sheetCharItem3BonusEditText = view.findViewById(R.id.sheetCharItem3Bonus)
-        sheetCharItem4EditText = view.findViewById(R.id.sheetCharItem4)
-        sheetCharItem4BonusEditText = view.findViewById(R.id.sheetCharItem4Bonus)
-        sheetCharItem5EditText = view.findViewById(R.id.sheetCharItem5)
-        sheetCharItem5BonusEditText = view.findViewById(R.id.sheetCharItem5Bonus)
+// Esconderijo
+        sheetCharHideoutEditText = binding.sheetCharHideout
 
-        // Inicializando o campo do esconderijo
-        sheetCharHideoutEditText = view.findViewById(R.id.sheetCharHideout)
+// Imagem
+        itemImageView = binding.imageItem
+
+// Botões
+        salvarButton = binding.salvarItemButton
+        selectImageButton = binding.buttonSelectImage
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -191,7 +187,28 @@ class DashboardFragment : Fragment() {
             salvarItem()
         }
 
-        return view
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.createSheetToolbar
+
+        val typedArray = requireContext().theme.obtainStyledAttributes(
+            intArrayOf(R.attr.back_arrow)
+        )
+        val backArrowDrawable = typedArray.getDrawable(0)
+        typedArray.recycle()
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(backArrowDrawable)
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
     }
 
     override fun onDestroyView() {
@@ -395,7 +412,6 @@ class DashboardFragment : Fragment() {
         uploadImageToFirestore()
     }
 
-
     private fun uploadImageToFirestore() {
         if (imageUri != null) {
             val inputStream = context?.contentResolver?.openInputStream(imageUri!!)
@@ -576,7 +592,6 @@ class DashboardFragment : Fragment() {
             Glide.with(this).load(imageUri).into(itemImageView)
         }
     }
-
     private fun saveItemIntoDatabase(talesSheet: TalesGeneralInfo) {
         //TODO("Altere a raiz que sera criada no seu banco de dados do realtime database.
         // Renomeie a raiz itens")

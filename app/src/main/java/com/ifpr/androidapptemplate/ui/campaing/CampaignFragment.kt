@@ -1,88 +1,50 @@
 package com.ifpr.androidapptemplate.ui.campaing
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.StorageReference
-import com.ifpr.androidapptemplate.baseclasses.TalesCampaign
+import com.google.firebase.database.ValueEventListener
 import com.ifpr.androidapptemplate.databinding.FragmentCampaignBinding
+import com.ifpr.androidapptemplate.R
+import com.ifpr.androidapptemplate.baseclasses.TalesCampaign
 
 class CampaignFragment : Fragment() {
     private var _binding: FragmentCampaignBinding? = null
-
-    private lateinit var campaingImageView: ImageView
-    private lateinit var campaignSelectImageBtn: Button
-    private lateinit var campaingNameEditText: EditText
-    private lateinit var campaingTypeSpinner: Spinner
-    private lateinit var campaingDescriptionEditText: EditText
-    private lateinit var campaingCreateBtn: Button
-
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var storageReference: StorageReference
-    private lateinit var auth: FirebaseAuth
-
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-    }
-
-    private var imageUri : Uri? = null
-
-    private val binding get() = _binding
-
-    private lateinit var campaignViewModel: CampaignViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val view = inflater.inflate(R.layout.fragment_campaign, container, false)
 
-        campaignViewModel = ViewModelProvider(this).get(CampaignViewModel::class.java)
+        val containerCampaign = view.findViewById<LinearLayout>(R.id.itemContainerCampaigns)
+        carregarCampanhas(containerCampaign)
 
-        _binding = FragmentCampaignBinding.inflate(inflater, container, false)
-        val binding = _binding!!
-        val root: View = binding.root
+        val createCampaignBtn = view.findViewById<FloatingActionButton>(R.id.campaignCreateBtn)
 
-
-        campaignViewModel.text.observe(viewLifecycleOwner) {
-            binding.textCampaign.text = it
+        createCampaignBtn.setOnClickListener {
+            val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
+            navController.navigate(R.id.navigation_create_campaigns)
         }
 
-        campaingImageView = binding.imageCampaign
-        campaignSelectImageBtn = binding.buttonSelectImageCampaign
-        campaingNameEditText = binding.campaignName
-        campaingTypeSpinner = binding.campaignType
-        campaingDescriptionEditText = binding.campaignDescription
-        campaingCreateBtn = binding.saveCampaignBtn
-
-        auth = FirebaseAuth.getInstance()
-
-        campaignSelectImageBtn.setOnClickListener {
-            openFileChoose()
-        }
-
-        campaingCreateBtn.setOnClickListener {
-            saveCampaign()
-        }
-
-        return root
-
+        return view
     }
 
     override fun onDestroyView() {
@@ -90,83 +52,71 @@ class CampaignFragment : Fragment() {
         _binding = null
     }
 
-    private fun openFileChoose(){
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, CampaignFragment.Companion.PICK_IMAGE_REQUEST)
-    }
+    fun carregarCampanhas(container: LinearLayout){
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
-    private fun saveCampaign(){
-        val campaignName = campaingNameEditText.text.toString().trim()
-        val campaingType = campaingTypeSpinner.selectedItem.toString()
-        val campaingDescription = campaingDescriptionEditText.text.toString().trim()
+        val databaseRef = FirebaseDatabase.getInstance().getReference("campanhas")
 
-        if(campaignName.isEmpty() || campaingDescription.isEmpty()) {
-            Toast.makeText(context, "Por favor, preencha todos os campos obrigatórios", Toast.LENGTH_SHORT).show()
-            return
-        }
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
 
-        val talesCampaing = TalesCampaign(
-            campaignName,
-            campaingType,
-            campaingDescription,
-            generateInviteCode()
-        )
-        uploadDataToFirestone(talesCampaing)
-    }
+                container.removeAllViews()
 
-    private fun uploadDataToFirestone(talesCampaign: TalesCampaign){
+                for (itemSnapshot in snapshot.children) {
+                    val item = itemSnapshot.getValue(TalesCampaign::class.java) ?: continue
 
-        if(imageUri != null){
-            val inputStream = context?.contentResolver?.openInputStream(imageUri!!)
-            val bytes = inputStream?.readBytes()
-            inputStream?.close()
+                    if(item.ownerUid != uid) continue
 
-            if(bytes != null){
-                val base64Image = Base64.encodeToString(bytes, Base64.DEFAULT)
+                    val itemView = LayoutInflater.from(container.context)
+                        .inflate(R.layout.item_campaing_template, container, false)
 
-                talesCampaign.base64Image = base64Image
+                    val imageView = itemView.findViewById<ImageView>(R.id.image_campaign)
+                    val campaignNameLabel = itemView.findViewById<TextView>(R.id.campaignNameLabel)
+                    val campaignTypeLabel = itemView.findViewById<TextView>(R.id.campaingTypeLabel)
+                    val campaingCodeLabel = itemView.findViewById<TextView>(R.id.campaingCodeLabel)
+                    val campaingDescLabel = itemView.findViewById<TextView>(R.id.campaingDescLabel)
 
-                saveCampaingIntoDatabase(talesCampaign)
-            }
-        }
+                    val campaignOpenBtn = itemView.findViewById<Button>(R.id.campaignOpenBtn)
 
-    }
+                    campaignNameLabel.text = item.nome ?: " Não informado!"
+                    campaignTypeLabel.text = item.type ?: " Não informado!"
+                    campaingCodeLabel.text = item.code ?: " Não criado!"
+                    campaingDescLabel.text = item.description ?: " Não informado!"
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CampaignFragment.Companion.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
-            && data != null && data.data != null
-        ) {
-            imageUri = data.data
-            Glide.with(this).load(imageUri).into(campaingImageView)
-        }
-    }
+                    if (!item.imageUrl.isNullOrEmpty()) {
+                        Glide.with(container.context).load(item.imageUrl).into(imageView)
+                    } else if (!item.base64Image.isNullOrEmpty()) {
+                        try {
+                            val bytes = Base64.decode(item.base64Image, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            imageView.setImageBitmap(bitmap)
+                        } catch (_: Exception) {}
+                    }
 
-    private fun saveCampaingIntoDatabase(talesCampaign: TalesCampaign) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("campanhas")
+                    campaignOpenBtn.setOnClickListener {
+                        val campaignKey = snapshot.key
 
-        val itemId = databaseReference.push().key
-        if(itemId != null){
-            talesCampaign.ownerUid = auth.uid
-            databaseReference.child(itemId).setValue(talesCampaign)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Campanha cadastrada com sucesso!", Toast.LENGTH_SHORT)
-                        .show()
-                    requireActivity().supportFragmentManager.popBackStack()
-                }.addOnFailureListener {
-                    Toast.makeText(context, "Falha ao cadastrar Campanha", Toast.LENGTH_SHORT).show()
+                        openCampaignView(item, campaignKey!!)
+                    }
+
+                    container.addView(itemView)
                 }
-        } else {
-            Toast.makeText(context, "Erro ao gerar ID da Campanha", Toast.LENGTH_SHORT).show()
-        }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(container.context, "Erro ao carregar dados", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-    fun generateInviteCode(length: Int = 6): String {
-        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return (1..length)
-            .map { chars.random() }
-            .joinToString("")
+    private fun openCampaignView(talesCampaign: TalesCampaign, campaingKey: String){
+        val bundle = Bundle()
+        bundle.putSerializable("campaingData", talesCampaign)
+        bundle.putString("campaingId", campaingKey)
+
+        val navController = findNavController(requireActivity(), R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.navigation_campaign_view, bundle)
     }
+
 }
